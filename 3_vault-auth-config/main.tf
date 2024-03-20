@@ -38,6 +38,7 @@ provider "vault" {
 
   # If we've not yet bootstrapped... use an admin token for auth
   # otherwise, use dynamic creds (by setting token to null)
+  #if var.auth_method is "admin_token", then get token from workspace_2, otherwise token is null
   token = var.auth_method == "admin_token" ? data.terraform_remote_state.hcp_clusters.outputs.vault_root_token : null
 
   namespace = "admin"

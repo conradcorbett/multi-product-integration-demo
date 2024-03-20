@@ -3,3 +3,7 @@ doormat-prereqs/.terraform.lock.hcl
 doormat-prereqs/terraform.tfstate
 doormat-prereqs/terraform.tfstate.backup
 .DS_Store
+workload/.terraform
+workload/.terraform.lock.hcl
+workload/terraform.tfstate
+workload/terraform.tfstate.backup
