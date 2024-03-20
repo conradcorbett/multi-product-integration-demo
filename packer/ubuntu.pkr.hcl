@@ -1,10 +1,11 @@
 variable "subnet_id" {
   type = string
+  default = "subnet-043df13d2a02bd79b"
 }
 
 variable "region" {
   type    = string
-  default = "us-east-2"
+  default = "us-east-1"
 }
 
 source "amazon-ebs" "amd" {

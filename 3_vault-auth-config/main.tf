@@ -93,6 +93,7 @@ resource "tfe_variable_set" "project_vault_auth" {
   name        = "project_vault_auth_${data.tfe_project.project.name}"
   description = "A set of example variables"
   global      = false
+  organization = "${var.tfc_organization}"
 }
 
 resource "tfe_project_variable_set" "project_vault_auth" {

@@ -8,7 +8,7 @@ terraform {
 
 variable "tfc_organization" {
   type    = string
-  default = ""
+  default = "SeeSquared"
 }
 
 variable "tfc_workspace_names" {
