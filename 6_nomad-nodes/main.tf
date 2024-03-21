@@ -148,7 +148,7 @@ resource "aws_iam_instance_profile" "efs_instance_profile" {
 resource "aws_launch_template" "nomad_client_x86_launch_template" {
   name_prefix   = "lt-"
   image_id      = data.hcp_packer_image.ubuntu_lunar_hashi_x86.cloud_image_id
-  instance_type = "t3a.medium"
+  instance_type = "t3a.small"
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.efs_instance_profile.arn
@@ -216,7 +216,7 @@ resource "aws_autoscaling_group" "nomad_client_x86_asg" {
 resource "aws_launch_template" "nomad_client_arm_launch_template" {
   name_prefix   = "lt-"
   image_id      = data.hcp_packer_image.ubuntu_lunar_hashi_arm.cloud_image_id
-  instance_type = "t4g.medium"
+  instance_type = "t4g.small"
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.efs_instance_profile.arn

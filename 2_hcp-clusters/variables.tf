@@ -32,7 +32,7 @@ variable "boundary_cluster_tier" {
 variable "vault_cluster_tier" {
   type        = string
   description = "The tier used when creating the Vault cluster"
-  default     = "plus_small"
+  default     = "dev"
 }
 
 variable "consul_cluster_tier" {
