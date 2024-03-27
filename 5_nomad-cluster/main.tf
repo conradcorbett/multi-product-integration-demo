@@ -67,7 +67,7 @@ resource "vault_policy" "nomad_policy" {
 
 resource "vault_token_auth_backend_role" "nomad_role" {
   role_name = "nomad_role"
-  allowed_policies  = [vault_policy.nomad_policy.name]
+  allowed_policies  = [vault_policy.nomad_policy.name, "pki-policy-server", "pki-policy-client"]
   orphan = true
   token_explicit_max_ttl = "0"
   token_period  = "259200"
