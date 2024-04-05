@@ -38,7 +38,6 @@ job "demo-splunk" {
             driver = "docker"
             config {
                 image = "splunk/splunk:8.0.4.1"
-                volumes = ["local/default.yml:/tmp/defaults/default.yml" ]
             }
             env {
                 SPLUNK_START_ARGS = "--accept-license"
