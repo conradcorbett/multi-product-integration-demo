@@ -15,7 +15,7 @@ job "demo-mongodb" {
         service {
             name = "splunk"
             port = "8443"
-            address = "${attr.unique.platform.aws.public-ipv4}"
+            address = "$${attr.unique.platform.aws.public-ipv4}"
 
             connect{
                 sidecar_service {}
