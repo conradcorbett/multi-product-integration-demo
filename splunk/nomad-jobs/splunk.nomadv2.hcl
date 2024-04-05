@@ -26,7 +26,7 @@ job "demo-splunk" {
 
         service {
             name = "splunk-http"
-            port = "8443"
+            port = "8000"
             address = "${attr.unique.platform.aws.public-ipv4}"
 
             connect{
