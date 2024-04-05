@@ -111,4 +111,7 @@ resource "nomad_job" "splunk" {
     jobspec = templatefile("${path.module}/nomad-jobs/splunk.nomad.tpl", {
         default_yml = data.local_file.defaultyml.content
   })
+    hcl2 {
+    allow_fs = true
+  }
 }

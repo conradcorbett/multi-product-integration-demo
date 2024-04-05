@@ -26,8 +26,8 @@ job "demo-mongodb" {
             driver = "docker"
             template {
                 data = <<EOF
-    $default_yml
-    EOF
+${default_yml}
+EOF
                 destination = "/tmp/defaults/default.yml"
             }
             config {
