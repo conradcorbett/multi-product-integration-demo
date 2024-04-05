@@ -1,4 +1,4 @@
-job "demo-mongodb" {
+job "demo-splunk" {
     datacenters = ["dc1"]
     node_pool = "x86"
     type = "service"

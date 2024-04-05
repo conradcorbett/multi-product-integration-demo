@@ -115,3 +115,7 @@ resource "nomad_job" "splunk" {
     allow_fs = true
   }
 }
+
+resource "nomad_job" "frontend" {
+  jobspec = file("${path.module}/nomad-jobs/frontend.hcl")
+}
