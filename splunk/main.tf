@@ -103,19 +103,23 @@ provider "nomad" {
   secret_id = data.vault_kv_secret_v2.bootstrap.data["SecretID"]
 }
 
-data "local_file" "defaultyml" {
-  filename = "${path.module}/config/default.yml"
-}
+#data "local_file" "defaultyml" {
+#  filename = "${path.module}/config/default.yml"
+#}
+#
+#resource "nomad_job" "splunk" {
+#    jobspec = templatefile("${path.module}/nomad-jobs/splunk.nomad.tpl", {
+#        default_yml = data.local_file.defaultyml.content
+#  })
+#    hcl2 {
+#    allow_fs = true
+#  }
+#}
+#
+#resource "nomad_job" "frontend" {
+#  jobspec = file("${path.module}/nomad-jobs/frontend.hcl")
+#}
 
-resource "nomad_job" "splunk" {
-    jobspec = templatefile("${path.module}/nomad-jobs/splunk.nomad.tpl", {
-        default_yml = data.local_file.defaultyml.content
-  })
-    hcl2 {
-    allow_fs = true
-  }
-}
-
-resource "nomad_job" "frontend" {
-  jobspec = file("${path.module}/nomad-jobs/frontend.hcl")
+resource "nomad_job" "splunkv2" {
+  jobspec = file("${path.module}/nomad-jobs/splunk.nomadv2.hcl")
 }
