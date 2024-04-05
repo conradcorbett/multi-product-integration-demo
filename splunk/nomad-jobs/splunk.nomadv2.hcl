@@ -249,6 +249,7 @@ EOF
                 SPLUNK_START_ARGS = "--accept-license"
                 SPLUNK_PASSWORD= "lvm-password"
                 SPLUNK_DB = "/var/lib/splunk"
+                SPLUNK_USER = "root"
             }
         }
     }
