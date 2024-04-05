@@ -10,6 +10,10 @@ job "demo-splunk" {
                 static = 8443
                 to     = 8443
             }
+            port "hec" {
+                static = 8088
+                to     = 8088
+            }
         }
 
         service {
@@ -239,6 +243,7 @@ EOF
             config {
                 image = "splunk/splunk:8.0.4.1"
                 volumes = ["local/default.yml:/tmp/defaults/default.yml" ]
+                ports = ["http", "hec"]
             }
             env {
                 SPLUNK_START_ARGS = "--accept-license"
