@@ -28,10 +28,11 @@ job "demo-splunk" {
                 data = <<EOF
 ${default_yml}
 EOF
-                destination = "/tmp/defaults/default.yml"
+                destination = "local/default.yml"
             }
             config {
                 image = "splunk/splunk:8.0.4.1"
+                volumes = ["local/default.yml:/tmp/defaults/default.yml" ]
             }
             env {
                 SPLUNK_START_ARGS = "--accept-license"

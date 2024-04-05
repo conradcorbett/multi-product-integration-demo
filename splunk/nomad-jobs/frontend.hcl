@@ -30,10 +30,6 @@ job "demo-frontend" {
         }
         task "frontend" {
             driver = "docker"
-            vault {
-                policies = ["nomad"]
-                change_mode   = "restart"
-            }
             template {
                 data = <<EOH
 MONGOKU_DEFAULT_HOST=127.0.0.1:27017
