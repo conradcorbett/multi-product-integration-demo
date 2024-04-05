@@ -7,14 +7,14 @@ job "demo-splunk" {
         network {
             mode = "bridge"
             port "http" {
-                static = 8000
-                to     = 8000
+                static = 8443
+                to     = 8443
             }
         }
 
         service {
             name = "splunk"
-            port = "8000"
+            port = "8443"
             address = "${attr.unique.platform.aws.public-ipv4}"
 
             connect{
