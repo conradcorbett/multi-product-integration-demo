@@ -154,7 +154,7 @@ resource "aws_launch_template" "nomad_client_x86_launch_template" {
     arn = aws_iam_instance_profile.efs_instance_profile.arn
   }
   block_device_mappings {
-    device_name = "/"
+    device_name = "/dev/sda1"
 
     ebs {
       volume_size = 25
