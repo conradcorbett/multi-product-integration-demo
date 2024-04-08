@@ -23,6 +23,11 @@ server {
 client {
   node_pool = "${node_pool}"
   enabled = true
+  host_volume "vaultauditlog" {
+    path      = "/opt/vaultauditlog/data"
+    read_only = false
+  }
+
 }
 consul {
   token = "${consul_acl_token}"

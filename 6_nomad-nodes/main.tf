@@ -153,6 +153,13 @@ resource "aws_launch_template" "nomad_client_x86_launch_template" {
   iam_instance_profile {
     arn = aws_iam_instance_profile.efs_instance_profile.arn
   }
+  block_device_mappings {
+    device_name = "/dev/sda1"
+
+    ebs {
+      volume_size = 25
+    }
+  }
 
   network_interfaces {
     associate_public_ip_address = true
