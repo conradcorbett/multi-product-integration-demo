@@ -10,6 +10,7 @@ jq '.tls.defaults.ca_file = "/etc/consul.d/ca.pem"' /etc/consul.d/client.temp.2 
 jq '.ports = {"grpc":8502}' /etc/consul.d/client.temp.3 > /etc/consul.d/consul.json
 
 sudo systemctl restart consul
+sudo mkdir -p /opt/vaultauditlog/data
 
 # Create Nomad configuration file
 cat <<EOF > /etc/nomad.d/nomad.hcl
