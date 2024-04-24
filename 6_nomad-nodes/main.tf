@@ -220,26 +220,26 @@ resource "aws_autoscaling_group" "nomad_client_x86_asg" {
   }
 }
 
-#resource "aws_launch_template" "nomad_client_arm_launch_template" {
-#  name_prefix   = "lt-"
-#  image_id      = data.hcp_packer_image.ubuntu_lunar_hashi_arm.cloud_image_id
-#  instance_type = "t4g.small"
-#
-#  iam_instance_profile {
-#    arn = aws_iam_instance_profile.efs_instance_profile.arn
-#  }
-#
-#  network_interfaces {
-#    associate_public_ip_address = true
-#    security_groups = [ 
-#      data.terraform_remote_state.nomad_cluster.outputs.nomad_sg,
-#      data.terraform_remote_state.networking.outputs.hvn_sg_id
-#    ]
-#  }
-#
-#  private_dns_name_options {
-#    hostname_type = "resource-name"
-#  }
+resource "aws_launch_template" "nomad_client_arm_launch_template" {
+  name_prefix   = "lt-"
+  image_id      = data.hcp_packer_image.ubuntu_lunar_hashi_arm.cloud_image_id
+  instance_type = "t4g.small"
+
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.efs_instance_profile.arn
+  }
+
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups = [ 
+      data.terraform_remote_state.nomad_cluster.outputs.nomad_sg,
+      data.terraform_remote_state.networking.outputs.hvn_sg_id
+    ]
+  }
+
+  private_dns_name_options {
+    hostname_type = "resource-name"
+  }
 #
 #  user_data = base64encode(
 #    templatefile("${path.module}/scripts/nomad-node.tpl",
