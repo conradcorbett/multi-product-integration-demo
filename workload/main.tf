@@ -161,12 +161,12 @@ provider "nomad" {
 #  ]
 #}
 
-#resource "nomad_job" "frontend" {
+resource "nomad_job" "frontend" {
 #  depends_on = [
 #    vault_database_secret_backend_role.mongodb
 #  ]
-#  jobspec = file("${path.module}/nomad-jobs/frontend.hcl")
-#}
+  jobspec = file("${path.module}/nomad-jobs/frontend.hcl")
+}
 
 # resource "aws_lb_target_group" "frontend_tg" {
 #   name     = "frontend-tg"
