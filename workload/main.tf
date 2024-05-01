@@ -115,51 +115,51 @@ provider "nomad" {
 #  }
 #}
 
-data "consul_service" "mongo_service" {
-    depends_on = [ null_resource.wait_for_db ]
-    name = "demo-mongodb"
-}
+#data "consul_service" "mongo_service" {
+#    depends_on = [ null_resource.wait_for_db ]
+#    name = "demo-mongodb"
+#}
 
-resource "vault_database_secrets_mount" "mongodb" {
-  depends_on = [
-    null_resource.wait_for_db
-  ]
-  lifecycle {
-    ignore_changes = [
-      mongodb[0].password
-    ]
-  }
-  path = "mongodb"
+#resource "vault_database_secrets_mount" "mongodb" {
+#  depends_on = [
+#    null_resource.wait_for_db
+#  ]
+#  lifecycle {
+#    ignore_changes = [
+#      mongodb[0].password
+#    ]
+#  }
+#  path = "mongodb"
+#
+#  mongodb {
+#    name                 = "mongodb-on-nomad"
+#    username             = "admin"
+#    password             = "password"
+#    connection_url       = "mongodb://{{username}}:{{password}}@${[for s in data.consul_service.mongo_service.service : s.address][0]}:27017/admin?tls=false"
+#    max_open_connections = 0
+#    allowed_roles = [
+#      "demo",
+#    ]
+#  }
+#}
 
-  mongodb {
-    name                 = "mongodb-on-nomad"
-    username             = "admin"
-    password             = "password"
-    connection_url       = "mongodb://{{username}}:{{password}}@${[for s in data.consul_service.mongo_service.service : s.address][0]}:27017/admin?tls=false"
-    max_open_connections = 0
-    allowed_roles = [
-      "demo",
-    ]
-  }
-}
+#resource "null_resource" "mongodb_root_rotation" {
+#  depends_on = [
+#    vault_database_secrets_mount.mongodb
+#  ]
+#  provisioner "local-exec" {
+#    command = "curl --header \"X-Vault-Token: ${data.terraform_remote_state.hcp_clusters.outputs.vault_root_token}\" --request POST ${data.terraform_remote_state.hcp_clusters.outputs.vault_public_endpoint}/v1/${vault_database_secrets_mount.mongodb.path}/rotate-root/mongodb-on-nomad"
+#  }
+#}
 
-resource "null_resource" "mongodb_root_rotation" {
-  depends_on = [
-    vault_database_secrets_mount.mongodb
-  ]
-  provisioner "local-exec" {
-    command = "curl --header \"X-Vault-Token: ${data.terraform_remote_state.hcp_clusters.outputs.vault_root_token}\" --request POST ${data.terraform_remote_state.hcp_clusters.outputs.vault_public_endpoint}/v1/${vault_database_secrets_mount.mongodb.path}/rotate-root/mongodb-on-nomad"
-  }
-}
-
-resource "vault_database_secret_backend_role" "mongodb" {
-  name    = "demo"
-  backend = vault_database_secrets_mount.mongodb.path
-  db_name = vault_database_secrets_mount.mongodb.mongodb[0].name
-  creation_statements = [
-    "{\"db\": \"admin\",\"roles\": [{\"role\": \"root\"}]}"
-  ]
-}
+#resource "vault_database_secret_backend_role" "mongodb" {
+#  name    = "demo"
+#  backend = vault_database_secrets_mount.mongodb.path
+#  db_name = vault_database_secrets_mount.mongodb.mongodb[0].name
+#  creation_statements = [
+#    "{\"db\": \"admin\",\"roles\": [{\"role\": \"root\"}]}"
+#  ]
+#}
 
 #resource "nomad_job" "frontend" {
 #  depends_on = [
