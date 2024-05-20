@@ -47,6 +47,10 @@ job "demo-vault" {
                   "local:/vault/config",
                 ]
             }
+            vault {
+                policies = ["admin"]
+                change_mode   = "restart"              
+            }
             template {
               data = <<EOF
 {{ with secret "secret/data/customers/acme" }}

@@ -30,7 +30,7 @@ vault {
   enabled = true
   namespace = "admin"
   address = "${vault_public_endpoint}"
-  token   = "hvs.CAESIIvZe201II6Grq7XhGR6kOR0dlTJvdVsrfKR-9lS1uxRGicKImh2cy53WlN1OTRqdzFPVFFCZnp4RXk3Qk9haDcuTWk0NnIQ-3I"
+  token   = "${nomad_token}"
 
   # Optional settings:
   create_from_role = "nomad_role"
