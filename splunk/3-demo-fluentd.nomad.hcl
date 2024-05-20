@@ -6,36 +6,36 @@ job "demo-fluentd" {
     group "fluentd" {
         network {
             mode = "bridge"
-            port "http" {
-                static = 8443
-                to     = 8443
-            }
-            port "event" {
-                static = 8088
-                to     = 8088
-          }
-            port "mgmt" {
-                static = 8089
-                to     = 8089
-          }
-            port "data" {
-                static = 9997
-                to     = 9997
-          }
         }
-
-#        service {
-#            name = "splunk-http"
-#            port = "8443"
-#            address = "${attr.unique.platform.aws.public-ipv4}"
-#
-#            connect{
-#                sidecar_service {}
-#            }
-#        } 
-
+        service {
+            name = "demo-fluentd"
+            connect{
+                sidecar_service {
+                  proxy {
+                    upstreams {
+                      destination_name = "demo-splunk-event"
+                      local_bind_port = 8088
+                    }
+                  }
+                }
+            }
+        }  
+        volume "vaultauditlog" {
+          type = "host"
+          read_only = "false"
+          source = "vaultauditlog"
+        }
         task "fluentd" {
+            resources {
+                cpu = 800
+                memory = 200
+            }
             driver = "docker"
+            volume_mount {
+              volume      = "vaultauditlog"
+              destination = "/vault/logs"
+              read_only   = false
+            }
             config {
                 image = "brianshumate/fluentd-splunk-hec:0.0.2"
                 volumes = [
@@ -62,7 +62,7 @@ job "demo-fluentd" {
 </filter>
 <match vault_audit.**>
   @type splunk_hec
-  host 127.0.0.1
+  host "127.0.0.1"
   port 8088
   token 12b8a76f-3fa8-4d17-b67f-78d794f042fb
 </match>

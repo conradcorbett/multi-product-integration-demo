@@ -1,3 +1,57 @@
+job "demo-splunk" {
+    datacenters = ["dc1"]
+    node_pool = "x86"
+#    type = "service"
+
+    group "splunk" {
+        network {
+            mode = "bridge"
+            port "http" {
+                static = 8443
+                to     = 8443
+            }
+#            port "event" {
+#                static = 8088
+#                to     = 8088
+#          }
+            port "mgmt" {
+                static = 8089
+                to     = 8089
+          }
+            port "data" {
+                static = 9997
+                to     = 9997
+          }
+        }
+        service {
+            name = "demo-splunk-event"
+            port = "8088"
+            connect{
+                sidecar_service {}
+            }
+        } 
+        service {
+            name = "demo-splunk-ui"
+            port = "8443"
+#            address = "${attr.unique.platform.aws.public-ipv4}"
+            connect{
+                sidecar_service {}
+            }
+        }         
+        task "splunk" {
+            resources {
+                cpu = 1000
+                memory = 600
+            }
+            driver = "docker"
+            config {
+                image = "splunk/splunk:8.0.4.1"
+                volumes = [
+                  "local:/tmp/defaults",
+                ]
+            }
+            template {
+              data = <<EOF
 ansible_connection: local
 ansible_environment: {}
 ansible_post_tasks: null
@@ -205,3 +259,17 @@ splunkbase_password: null
 splunkbase_token: null
 splunkbase_username: null
 wait_for_splunk_retry_num: 60
+EOF
+
+        destination   = "local/default.yml"
+        change_mode   = "signal"
+        change_signal = "SIGHUP"
+            }
+            env {
+                SPLUNK_START_ARGS = "--accept-license"
+                SPLUNK_PASSWORD= "lvm-password"
+                SPLUNK_DB = "/var/lib/splunk"
+            }
+        }
+    }
+}
