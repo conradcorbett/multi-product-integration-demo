@@ -9,3 +9,6 @@ workload/terraform.tfstate
 workload/terraform.tfstate.backup
 workload-vault-DPC
 workloadmTLS
+demo-cert-auth
+splunk/vaultpki
+splunk
