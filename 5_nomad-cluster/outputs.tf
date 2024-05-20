@@ -13,3 +13,8 @@ output "bootstrap_kv" {
 output "ssh_ca_pub_key" {
   value = vault_ssh_secret_backend_ca.ssh_ca.public_key
 }
+
+output "vault_token_for_nomad" {
+  value = nonsensitive(vault_token.nomad_token.client_token)
+#  sensitive = true
+}
