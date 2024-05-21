@@ -47,20 +47,6 @@ job "demo-vault" {
                   "local:/vault/config",
                 ]
             }
-            vault {
-                policies = ["admin"]
-                change_mode   = "restart"              
-            }
-            template {
-              data = <<EOF
-{{ with secret "secret/data/customers/acme" }}
-"Organization": "{{ .Data.data.organization }}",
-"ID": "{{ .Data.data.customer_id }}",
-"Contact": "{{ .Data.data.contact_email }}"
-{{ end }}
-EOF
-        destination   = "local/cert.pem"
-            }
             template {
               data = <<EOF
 log_level = "trace"
