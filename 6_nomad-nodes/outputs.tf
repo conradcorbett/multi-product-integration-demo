@@ -8,4 +8,5 @@ output "nomad_client_x86_asg" {
 
 output "nomad_env_vars" {
   value = "export NOMAD_ADDR=http://${data.terraform_remote_state.nomad_cluster.outputs.nomad_public_endpoint} && export NOMAD_TOKEN=${data.vault_kv_secret_v2.bootstrap.data["SecretID"]}"
+  sensitive = true
 }
