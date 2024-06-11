@@ -103,10 +103,10 @@ provider "nomad" {
   secret_id = data.vault_kv_secret_v2.bootstrap.data["SecretID"]
 }
 
-#resource "nomad_job" "mongodb" {
-#  jobspec = file("${path.module}/nomad-jobs/mongodb.hcl")
-#}
-#
+resource "nomad_job" "demo-vault" {
+  jobspec = file("${path.module}/nomad-jobs/1-demo-vault.nomad.hcl")
+}
+
 #resource "null_resource" "wait_for_db" {
 #  depends_on = [nomad_job.mongodb]
 #
