@@ -1,5 +1,5 @@
 # Setup
-## Get the nomad addr from workspace 5 output in TFC
+## Get the nomad addr from workspace 6 output in TFC
 export NOMAD_ADDR="http://nomad-alb-532004401.us-east-1.elb.amazonaws.com"
 ## Get the nomad token from statefile in TFC, or read it from HCP vault kv
 export NOMAD_TOKEN='f85c7674-fe40-abc7-aa3b-55887ccd95fe'
@@ -9,6 +9,7 @@ nomad run 1-demo-vault.nomad.hcl
 ## Get Vault token from Nomad UI logs > stdout
 export VAULT_ADDR=http://54.234.235.178:8204
 export VAULT_ADDR=http://$(nomad node status -json $(nomad node pool nodes -json x86 | jq -r ".[0].ID") | jq -r '.Attributes."unique.platform.aws.public-ipv4"'):8204
+export VAULT_ADDR=http://$(nomad node status -json $(nomad node pool nodes -json x86 | jq -r ".[0].ID") | jq -r '.Attributes."unique.platform.aws.public-hostname"'):8204
 echo $VAULT_ADDR
 export VAULT_TOKEN=hvs.GQUqx98NJ1fg8rmd5nEkExqp
 vault audit enable file file_path=/vault/logs/vault-audit.log
@@ -18,6 +19,7 @@ vault write sys/internal/counters/config enabled=enable
 nomad run 2-demo-splunkv2.nomad.hcl 
 nomad status demo-splunk
 If splunk deploys properly, the last line in the logs should be: "Ansible playbook complete, will begin streaming var/log/splunk/splunkd_stderr.log"
+echo SPLUNK_URL=https://$(nomad node status -json $(nomad node pool nodes -json x86 | jq -r ".[0].ID") | jq -r '.Attributes."unique.platform.aws.public-hostname"'):8443
 Connect to splunk over web UI - admin / lvm-password - https://ec2-54-234-235-178.compute-1.amazonaws.com:8443/
 
 # Deploy Fluentd
@@ -27,6 +29,9 @@ nomad run 3-demo-fluentd.nomad.hcl
 
 # Deploy Telegraf
 nomad run 4-demo-telegraf.nomad.hcl 
+
+  url = "http://{{env "attr.unique.platform.aws.public-ipv4"}}:8088/services/collector"
+
 
 ## NOTE TODO - Only fluentd for audit log is functioning, need to go and adjust code to get telegraf working with consul service mesh (change to local IP on 127.0.0.1 so we can connect over mesh)
 

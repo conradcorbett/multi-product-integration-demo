@@ -11,3 +11,4 @@ workload-vault-DPC
 workloadmTLS
 demo-cert-auth
 splunk/vaultpki
+workload-pki

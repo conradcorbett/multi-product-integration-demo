@@ -17,6 +17,7 @@ job "demo-vault" {
             connect{
                 sidecar_service {
                   proxy {
+#                    transparent_proxy {}
                     upstreams {
                       destination_name = "demo-telegraf"
                       local_bind_port = 8125
@@ -46,6 +47,11 @@ job "demo-vault" {
                 volumes = [
                   "local:/vault/config",
                 ]
+                command = "/bin/sh"
+                args = [
+                  "-c",
+                  "vault server -config=/vault/config --dev --dev-root-token-id=roottoken"
+                ]
             }
             template {
               data = <<EOF
@@ -62,7 +68,7 @@ listener "tcp" {
 }
 
 telemetry {
-  dogstatsd_addr                 = "127.0.0.1:8125"
+  dogstatsd_addr                 = "{{env "attr.unique.platform.aws.public-ipv4"}}:8125"
   enable_hostname_label          = true
   disable_hostname               = true
   enable_high_cardinality_labels = "*"

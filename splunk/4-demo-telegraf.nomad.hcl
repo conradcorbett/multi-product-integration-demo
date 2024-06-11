@@ -6,21 +6,21 @@ job "demo-telegraf" {
     group "telegraf" {
         network {
             mode = "bridge"
-#            port "stats" {
-#                static = 8125
-#                to     = 8125
-#            }
+            port "stats" {
+                static = 8125
+                to     = 8125
+            }
         }
         service {
             name = "demo-telegraf"
-            port = "8125"
+#            port = "8125"
 #            address = "${attr.unique.platform.aws.public-ipv4}"
             connect{
                 sidecar_service {
                   proxy {
                     upstreams {
-                      destination_name = "demo-splunk"
-                      local_bind_port = 8443
+                      destination_name = "demo-splunk-event"
+                      local_bind_port = 8088
                     }
                   }
                 }
@@ -29,7 +29,7 @@ job "demo-telegraf" {
         task "telegraf" {
             resources {
                 cpu = 400
-                memory = 300
+                memory = 250
             }
             driver = "docker"
             config {
