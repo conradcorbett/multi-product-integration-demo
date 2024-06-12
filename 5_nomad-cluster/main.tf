@@ -291,6 +291,18 @@ resource "vault_mount" "kvv2" {
   options     = { version = "2" }
 }
 
+resource "vault_kv_secret_v2" "vault_self_managed_token" {
+  mount                      = vault_mount.kvv2.path
+  name                       = "vault_token"
+  cas                        = 1
+  delete_all_versions        = true
+  data_json                  = jsonencode(
+  {
+    VAULT_TOKEN       = "myvaulttoken"
+  }
+  )
+}
+
 resource "null_resource" "bootstrap_acl" {
   triggers = {
     asg = aws_autoscaling_group.nomad_server_asg.id
