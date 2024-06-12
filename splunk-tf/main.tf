@@ -104,6 +104,11 @@ provider "nomad" {
 }
 
 resource "nomad_job" "demo-vault" {
+  hcl2 {
+    vars = {
+       myvaulttoken = data.vault_kv_secret_v2.bootstrap.data["SecretID"]
+    }
+  }
   jobspec = file("${path.module}/nomad-jobs/1-demo-vault.nomad.hcl")
 }
 

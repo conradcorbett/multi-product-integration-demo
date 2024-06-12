@@ -1,3 +1,7 @@
+variable "myvaulttoken" {
+  type = string
+}
+
 job "demo-vault" {
     datacenters = ["dc1"]
     node_pool = "x86"
@@ -50,7 +54,7 @@ job "demo-vault" {
                 command = "/bin/sh"
                 args = [
                   "-c",
-                  "vault server -config=/vault/config --dev --dev-root-token-id=roottoken"
+                  "vault server -config=/vault/config --dev --dev-root-token-id=var.myvaulttoken"
                 ]
             }
             template {
