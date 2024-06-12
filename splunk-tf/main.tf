@@ -117,8 +117,10 @@ resource "nomad_job" "demo-vault" {
   jobspec = file("${path.module}/nomad-jobs/1-demo-vault.nomad.hcl")
 }
 
-data "nomad_node_pool" "x86" {
-  name = "x86"
+data "aws_instance" "nomad_x86_client" {
+  instance_tags = {
+    "aws:autoscaling:groupName" = "nomad-client-x86"
+  }
 }
 
 #resource "null_resource" "wait_for_db" {

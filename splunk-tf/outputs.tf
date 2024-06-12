@@ -4,5 +4,5 @@
 #
 
 output "test" {
-  value = data.nomad_node_pool.x86.meta.nodes
+  value = data.aws_instance.nomad_x86_client.public_ip
 }
