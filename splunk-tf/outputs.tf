@@ -4,5 +4,5 @@
 #
 
 output "test" {
-  value = data.nomad_node_pool.x86.meta.nodes.address
+  value = data.nomad_node_pool.x86.meta.nodes
 }
