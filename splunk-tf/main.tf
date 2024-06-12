@@ -130,12 +130,12 @@ data "aws_instance" "nomad_x86_client" {
 #    command = "sleep 10 && bash wait-for-nomad-job.sh ${nomad_job.mongodb.id} ${data.terraform_remote_state.nomad_cluster.outputs.nomad_public_endpoint} ${data.vault_kv_secret_v2.bootstrap.data["SecretID"]}"
 #  }
 #}
-
-data "consul_service" "demo-vault_service" {
-#    depends_on = [ null_resource.wait_for_db ]
-    name = "demo-vault"
-}
-
+#
+#data "consul_service" "demo-vault_service" {
+##    depends_on = [ null_resource.wait_for_db ]
+#    name = "demo-vault"
+#}
+#
 #resource "vault_database_secrets_mount" "mongodb" {
 #  depends_on = [
 #    null_resource.wait_for_db
@@ -182,4 +182,11 @@ resource "nomad_job" "demo-splunk" {
     nomad_job.demo-vault
   ]
   jobspec = file("${path.module}/nomad-jobs/2-demo-splunkv2.nomad.hcl")
+}
+
+resource "nomad_job" "demo-fluentd" {
+  depends_on = [
+    nomad_job.demo-splunk
+  ]
+  jobspec = file("${path.module}/nomad-jobs/3-demo-fluentd.nomad.hcl")
 }
