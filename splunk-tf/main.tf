@@ -177,9 +177,9 @@ data "consul_service" "demo-vault_service" {
 #  ]
 #}
 #
-#resource "nomad_job" "frontend" {
-#  depends_on = [
-#    vault_database_secret_backend_role.mongodb
-#  ]
-#  jobspec = file("${path.module}/nomad-jobs/frontend.hcl")
-#}
+resource "nomad_job" "demo-splunk" {
+  depends_on = [
+    nomad_job.demo-vault
+  ]
+  jobspec = file("${path.module}/nomad-jobs/2-demo-splunkv2.nomad.hcl")
+}
