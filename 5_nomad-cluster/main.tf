@@ -298,7 +298,7 @@ resource "vault_kv_secret_v2" "vault_self_managed_token" {
   delete_all_versions        = true
   data_json                  = jsonencode(
   {
-    VAULT_TOKEN       = "myvaulttoken"
+    VAULT_ROOT_TOKEN       = "roottoken"
   }
   )
 }

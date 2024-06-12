@@ -103,10 +103,15 @@ provider "nomad" {
   secret_id = data.vault_kv_secret_v2.bootstrap.data["SecretID"]
 }
 
+data "vault_kv_secret_v2" "vault-dev-root-token" {
+  mount = data.terraform_remote_state.nomad_cluster.outputs.bootstrap_kv
+  name  = "vault_token"
+}
+
 resource "nomad_job" "demo-vault" {
   hcl2 {
     vars = {
-       myvaulttoken = data.vault_kv_secret_v2.bootstrap.data["SecretID"]
+       myvaulttoken = data.vault_kv_secret_v2.vault-dev-root-token.data["VAULT_ROOT_TOKEN"]
     }
   }
   jobspec = file("${path.module}/nomad-jobs/1-demo-vault.nomad.hcl")
