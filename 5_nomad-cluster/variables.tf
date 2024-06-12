@@ -22,3 +22,7 @@ variable "region" {
 variable "nomad_license" {
   type = string
 }
+
+variable "vault_dev_root_token" {
+  type = string
+}
