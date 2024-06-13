@@ -1,5 +1,9 @@
 terraform {
   required_providers {
+    terracurl = {
+      source  = "devops-rob/terracurl"
+      version = "1.0.1"
+    }    
     doormat = {
       source  = "doormat.hashicorp.services/hashicorp-security/doormat"
       version = "~> 0.0.6"
@@ -188,11 +192,35 @@ resource "nomad_job" "demo-splunk" {
 }
 
 resource "time_sleep" "wait_15_seconds_2" {
-  depends_on = [nomad_job.demo-vault]
+  depends_on = [nomad_job.demo-splunk]
   create_duration = "15s"
 }
 
 resource "nomad_job" "demo-fluentd" {
   depends_on = [time_sleep.wait_15_seconds_2]
   jobspec = file("${path.module}/nomad-jobs/3-demo-fluentd.nomad.hcl")
+}
+
+resource "terracurl_request" "enable_audit" {
+ method         = "POST"
+ name           = "enable_audit"
+ response_codes = [200]
+ url            = "http://${data.aws_instance.nomad_x86_client.public_ip}:8204/v1/sys/audit/example-audit"
+ 
+ request_body   = <<EOF
+{
+  "type": "file",
+  "options": {
+    "file_path": "/vault/logs/vault-audit.log"
+  }
+}
+EOF
+
+  headers = {
+    X-Vault-Token = "${data.vault_kv_secret_v2.vault-dev-root-token.data["VAULT_ROOT_TOKEN"]}"
+  }
+ max_retry      = 7
+ retry_interval = 10
+ 
+ depends_on = [time_sleep.wait_15_seconds_2]
 }
