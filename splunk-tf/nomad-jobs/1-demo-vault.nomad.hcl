@@ -54,7 +54,7 @@ job "demo-vault" {
                 command = "/bin/sh"
                 args = [
                   "-c",
-                  "vault server -config=/vault/config --dev --dev-root-token-id=${var.myvaulttoken} && sleep 10 && vault audit enable file file_path=/vault/logs/vault-audit.log && chmod 777 /vault/logs/vault-audit.log"
+                  "vault server -config=/vault/config --dev --dev-root-token-id=${var.myvaulttoken} > /vault/logs/output.log 2>&1 & sleep 5 && VAULT_ADDR=http://127.0.0.1:8204 vault audit enable file file_path=/vault/logs/vault-audit.log && chmod 777 /vault/logs/vault-audit.log && tail -f /dev/null"
                 ]
             }
             template {
