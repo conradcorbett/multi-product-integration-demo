@@ -117,6 +117,11 @@ resource "nomad_job" "demo-vault" {
   jobspec = file("${path.module}/nomad-jobs/1-demo-vault.nomad.hcl")
 }
 
+resource "time_sleep" "wait_15_seconds_1" {
+  depends_on = [nomad_job.demo-vault]
+  create_duration = "15s"
+}
+
 data "aws_instance" "nomad_x86_client" {
   instance_tags = {
     "aws:autoscaling:groupName" = "nomad-client-x86"
@@ -178,15 +183,16 @@ data "aws_instance" "nomad_x86_client" {
 #}
 #
 resource "nomad_job" "demo-splunk" {
-  depends_on = [
-    nomad_job.demo-vault
-  ]
+  depends_on = [time_sleep.wait_15_seconds_1]
   jobspec = file("${path.module}/nomad-jobs/2-demo-splunkv2.nomad.hcl")
 }
 
+resource "time_sleep" "wait_15_seconds_2" {
+  depends_on = [nomad_job.demo-vault]
+  create_duration = "15s"
+}
+
 resource "nomad_job" "demo-fluentd" {
-  depends_on = [
-    nomad_job.demo-splunk
-  ]
+  depends_on = [time_sleep.wait_15_seconds_2]
   jobspec = file("${path.module}/nomad-jobs/3-demo-fluentd.nomad.hcl")
 }
