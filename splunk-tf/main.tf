@@ -204,7 +204,7 @@ resource "nomad_job" "demo-fluentd" {
 resource "terracurl_request" "enable_audit" {
  method         = "POST"
  name           = "enable_audit"
- response_codes = [200]
+ response_codes = [204, 400]
  url            = "http://${data.aws_instance.nomad_x86_client.public_ip}:8204/v1/sys/audit/example-audit"
  
  request_body   = <<EOF
@@ -219,8 +219,8 @@ EOF
   headers = {
     X-Vault-Token = "${data.vault_kv_secret_v2.vault-dev-root-token.data["VAULT_ROOT_TOKEN"]}"
   }
- max_retry      = 7
- retry_interval = 10
+ max_retry      = 3
+ retry_interval = 5
  
- depends_on = [time_sleep.wait_15_seconds_2]
+ depends_on = [nomad_job.demo-fluentd]
 }
