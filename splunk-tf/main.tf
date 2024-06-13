@@ -201,26 +201,26 @@ resource "nomad_job" "demo-fluentd" {
   jobspec = file("${path.module}/nomad-jobs/3-demo-fluentd.nomad.hcl")
 }
 
-resource "terracurl_request" "enable_audit" {
- method         = "POST"
- name           = "enable_audit"
- response_codes = [204, 400]
- url            = "http://${data.aws_instance.nomad_x86_client.public_ip}:8204/v1/sys/audit/example-audit"
- 
- request_body   = <<EOF
-{
-  "type": "file",
-  "options": {
-    "file_path": "/vault/logs/vault-audit.log"
-  }
-}
-EOF
-
-  headers = {
-    X-Vault-Token = "${data.vault_kv_secret_v2.vault-dev-root-token.data["VAULT_ROOT_TOKEN"]}"
-  }
- max_retry      = 3
- retry_interval = 5
- 
- depends_on = [nomad_job.demo-fluentd]
-}
+#resource "terracurl_request" "enable_audit" {
+# method         = "POST"
+# name           = "enable_audit"
+# response_codes = [204, 400]
+# url            = "http://${data.aws_instance.nomad_x86_client.public_ip}:8204/v1/sys/audit/example-audit"
+# 
+# request_body   = <<EOF
+#{
+#  "type": "file",
+#  "options": {
+#    "file_path": "/vault/logs/vault-audit.log"
+#  }
+#}
+#EOF
+#
+#  headers = {
+#    X-Vault-Token = "${data.vault_kv_secret_v2.vault-dev-root-token.data["VAULT_ROOT_TOKEN"]}"
+#  }
+# max_retry      = 3
+# retry_interval = 5
+# 
+# depends_on = [nomad_job.demo-fluentd]
+#}
