@@ -11,6 +11,7 @@ jq '.ports = {"grpc":8502}' /etc/consul.d/client.temp.3 > /etc/consul.d/consul.j
 
 sudo systemctl restart consul
 sudo mkdir -p /opt/vaultauditlog/data
+sudo chmod -R 777 /opt/vaultauditlog/data/
 
 # Create Nomad configuration file
 cat <<EOF > /etc/nomad.d/nomad.hcl
