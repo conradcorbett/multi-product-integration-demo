@@ -130,6 +130,10 @@ data "aws_instance" "nomad_x86_client" {
   instance_tags = {
     "aws:autoscaling:groupName" = "nomad-client-x86"
   }
+  filter {
+    name = "instance-state-name"
+    values = ["running"]
+  }
 }
 
 #resource "null_resource" "wait_for_db" {
