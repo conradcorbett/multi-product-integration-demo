@@ -27,7 +27,7 @@ job "demo-fluentd" {
         }
         task "fluentd" {
             resources {
-                cpu = 800
+                cpu = 1800
                 memory = 200
             }
             driver = "docker"
