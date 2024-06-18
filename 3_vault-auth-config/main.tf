@@ -59,7 +59,7 @@ resource "vault_policy" "admin" {
 
 data "vault_policy_document" "splunk_tf" {
   rule {
-    path         = "admin/hashistack-admin/data/*"
+    path         = "hashistack-admin/data/*"
     capabilities = ["read", "list"]
     description  = "Read Nomad bootstrap and Vault token"
   }
