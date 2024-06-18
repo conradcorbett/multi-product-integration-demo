@@ -104,7 +104,7 @@ resource "vault_jwt_auth_backend_role" "project_admin_role" {
 }
 
 resource "vault_jwt_auth_backend_role" "splunk_tf_role" {
-  role_name = "project_role"
+  role_name = "splunkstack"
   backend   = vault_jwt_auth_backend.tfc.path
 
   bound_audiences = ["vault.workload.identity"]
