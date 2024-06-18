@@ -1,6 +1,6 @@
 #!/bin/bash
 # Get HCP Vault token and URL from UI
-export VAULT_TOKEN="hvs.CAESIKYye9z6HylN3RSJu1Yn5dmnqaEIgMdhV4Xctoq_jW1xGicKImh2cy5HZDUybklvR25JeVZUSXViOU1lZjRvY0guNUkyVGgQogM"
+export VAULT_TOKEN="vault_token_here"
 export VAULT_ADDR="https://cc-vault-cluster-public-vault-c8a47190.b9972b9f.z1.hashicorp.cloud:8200"
 export VAULT_NAMESPACE="admin"
 

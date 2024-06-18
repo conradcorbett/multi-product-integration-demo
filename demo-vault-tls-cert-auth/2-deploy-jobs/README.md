@@ -4,7 +4,7 @@ nomad run 1-demo-vault.nomad.hcl
 set mac osx /etc/hosts file with Nomad external IP to resolve to vault-tls.seesquared.local
 VAULT_IP=nomad node status -json $(nomad node pool nodes -json x86 | jq -r ".[0].ID") | jq -r '.Attributes."unique.platform.aws.public-ipv4"'
 export VAULT_ADDR=https://vault-tls.seesquared.local:8204
-export VAULT_TOKEN=hvs.ZkGtVF6gKK3q4xZnBMMWIdhP
+export VAULT_TOKEN="vault_token_here"
 vault audit enable file file_path=/vault/logs/vault-audit.log
 vault write sys/internal/counters/config enabled=enable
 
