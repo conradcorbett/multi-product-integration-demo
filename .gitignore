@@ -12,3 +12,12 @@ workloadmTLS
 demo-cert-auth
 splunk/vaultpki
 workload-pki
+demo-vault-ca-pki
+demo-vault-tls-cert-auth/1-create-cert/client1
+demo-vault-tls-cert-auth/1-create-cert/vault*
+demo-vault-tls-cert-auth/1-create-cert/cert.json
+demo-vault-tls-cert-auth/2-deploy-jobs/client*
+demo-nomad-workload/.terraform*
+demo-nomad-workload/terraform.tfstate
+demo-vault-DPC/consumer/.terraform*
+demo-vault-DPC/producer/.terraform*

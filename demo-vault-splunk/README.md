@@ -1,6 +1,6 @@
 # Vault and Splunk Demo
 
-  <img alt="Diagram" src="../splunk-tf/splunk.png" width="500" />
+  <img alt="Diagram" src="../demo-vault-splunk-tf/splunk.png" width="500" />
 
 ## Overview
 This demo will deploy Vault, Splunk and Fluentd on Nomad. The demo can be used to show how Vault's audit log counts clients. Unlike the demo in the splunk-tf directory, this demo does not use TFC to deploy the Nomad jobs. Instead, you will deploy the Nomad jobs manually using your CLI. The Nomad jobs are automatically added to the consul service mesh. Create an intention to allow Fluentd to communicate with the Splunk event service in Consul.

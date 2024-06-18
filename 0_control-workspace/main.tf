@@ -121,7 +121,7 @@ resource "tfe_workspace" "workload" {
     branch = var.repo_branch
   }
 
-  working_directory = "workload"
+  working_directory = "demo-nomad-workload"
   queue_all_runs = false
   assessments_enabled = false
   global_remote_state = true
@@ -138,7 +138,7 @@ resource "tfe_workspace" "splunk-tf" {
     branch = var.repo_branch
   }
 
-  working_directory = "splunk-tf"
+  working_directory = "demo-vault-splunk-tf"
   queue_all_runs = false
   assessments_enabled = false
   global_remote_state = true
