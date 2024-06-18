@@ -136,60 +136,6 @@ data "aws_instance" "nomad_x86_client" {
   }
 }
 
-#resource "null_resource" "wait_for_db" {
-#  depends_on = [nomad_job.mongodb]
-#
-#  provisioner "local-exec" {
-#    command = "sleep 10 && bash wait-for-nomad-job.sh ${nomad_job.mongodb.id} ${data.terraform_remote_state.nomad_cluster.outputs.nomad_public_endpoint} ${data.vault_kv_secret_v2.bootstrap.data["SecretID"]}"
-#  }
-#}
-#
-#data "consul_service" "demo-vault_service" {
-##    depends_on = [ null_resource.wait_for_db ]
-#    name = "demo-vault"
-#}
-#
-#resource "vault_database_secrets_mount" "mongodb" {
-#  depends_on = [
-#    null_resource.wait_for_db
-#  ]
-#  lifecycle {
-#    ignore_changes = [
-#      mongodb[0].password
-#    ]
-#  }
-#  path = "mongodb"
-#
-#  mongodb {
-#    name                 = "mongodb-on-nomad"
-#    username             = "admin"
-#    password             = "password"
-#    connection_url       = "mongodb://{{username}}:{{password}}@${[for s in data.consul_service.mongo_service.service : s.address][0]}:27017/admin?tls=false"
-#    max_open_connections = 0
-#    allowed_roles = [
-#      "demo",
-#    ]
-#  }
-#}
-#
-#resource "null_resource" "mongodb_root_rotation" {
-#  depends_on = [
-#    vault_database_secrets_mount.mongodb
-#  ]
-#  provisioner "local-exec" {
-#    command = "curl --header \"X-Vault-Token: ${data.terraform_remote_state.hcp_clusters.outputs.vault_root_token}\" --request POST ${data.terraform_remote_state.hcp_clusters.outputs.vault_public_endpoint}/v1/${vault_database_secrets_mount.mongodb.path}/rotate-root/mongodb-on-nomad"
-#  }
-#}
-#
-#resource "vault_database_secret_backend_role" "mongodb" {
-#  name    = "demo"
-#  backend = vault_database_secrets_mount.mongodb.path
-#  db_name = vault_database_secrets_mount.mongodb.mongodb[0].name
-#  creation_statements = [
-#    "{\"db\": \"admin\",\"roles\": [{\"role\": \"root\"}]}"
-#  ]
-#}
-#
 resource "nomad_job" "demo-splunk" {
   depends_on = [time_sleep.wait_15_seconds_1]
   jobspec = file("${path.module}/nomad-jobs/2-demo-splunkv2.nomad.hcl")

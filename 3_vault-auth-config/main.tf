@@ -57,6 +57,19 @@ resource "vault_policy" "admin" {
   policy = data.vault_policy_document.admin.hcl
 }
 
+data "vault_policy_document" "splunk_tf" {
+  rule {
+    path         = "admin/hashistack-admin/data/*"
+    capabilities = ["read", "list"]
+    description  = "Read Nomad bootstrap and Vault token"
+  }
+}
+
+resource "vault_policy" "splunk_tf" {
+  name   = "9_splunk_tf"
+  policy = data.vault_policy_document.splunk_tf.hcl
+}
+
 data "tfe_project" "project" {
   name = "hashistack"
   organization = "${var.tfc_organization}"
@@ -83,6 +96,28 @@ resource "vault_jwt_auth_backend_role" "project_admin_role" {
       "organization:${var.tfc_organization}",
       "project:${data.tfe_project.project.name}",
       "workspace:*",
+      "run_phase:*",
+    ])
+  }
+
+  bound_claims_type = "glob"
+}
+
+resource "vault_jwt_auth_backend_role" "splunk_tf_role" {
+  role_name = "project_role"
+  backend   = vault_jwt_auth_backend.tfc.path
+
+  bound_audiences = ["vault.workload.identity"]
+  user_claim      = "terraform_full_workspace"
+  role_type       = "jwt"
+  token_ttl       = 300
+  token_policies  = [vault_policy.admin.name]
+
+  bound_claims = {
+    "sub" = join(":", [
+      "organization:${var.tfc_organization}",
+      "project:${data.tfe_project.project.name}",
+      "workspace:9_splunk-tf",
       "run_phase:*",
     ])
   }
@@ -129,6 +164,18 @@ resource "tfe_variable" "tfc_vault_run_role" {
   value        = vault_jwt_auth_backend_role.project_admin_role.role_name
   category     = "env"
   variable_set_id = tfe_variable_set.project_vault_auth.id
+}
+
+data "tfe_workspace" "splunktf" {
+  name         = "9_splunk-tf"
+  organization = "${var.tfc_organization}"
+}
+
+resource "tfe_variable" "tfc_vault_run_role" {
+  key          = "TFC_VAULT_RUN_ROLE"
+  value        = vault_jwt_auth_backend_role.splunk_tf_role.role_name
+  category     = "env"
+  workspace_id = data.tfe_workspace.splunktf.variable_set_id
 }
 
 resource "tfe_variable" "tfc_vault_auth_path" {

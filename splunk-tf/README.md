@@ -8,7 +8,6 @@ The nomad jobs are automatically added to the consul service mesh.
 
 In Splunk UI: Settings > Indexes > vault-audit should not have events until the intention is created in Consul and there is audit log activity.
 
-vault audit enable file file_path=/vault/logs/vault-audit.log
 vault write sys/internal/counters/config enabled=enable
 vault auth enable userpass
 for i in {1..10}
