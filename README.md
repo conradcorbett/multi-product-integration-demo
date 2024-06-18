@@ -145,4 +145,5 @@ Once the run is complete, you can access each tool by:
 vault kv get -mount=hashistack-admin/ nomad_bootstrap/SecretID
 ```
 
-### Stay Tuned for a video walkthrough of this demo and environment 
+## Running the demos
+There are various demos that showcase integration across the hashicorp products. The demos are located in the folders that start with demo-*. See the individual READMEs for instructions on how to run the demo.
