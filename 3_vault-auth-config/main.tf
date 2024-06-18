@@ -171,11 +171,11 @@ data "tfe_workspace" "splunktf" {
   organization = "${var.tfc_organization}"
 }
 
-resource "tfe_variable" "tfc_vault_run_role" {
+resource "tfe_variable" "tfc_vault_run_role_ws9" {
   key          = "TFC_VAULT_RUN_ROLE"
   value        = vault_jwt_auth_backend_role.splunk_tf_role.role_name
   category     = "env"
-  workspace_id = data.tfe_workspace.splunktf.variable_set_id
+  workspace_id = data.tfe_workspace.splunktf.id
 }
 
 resource "tfe_variable" "tfc_vault_auth_path" {
