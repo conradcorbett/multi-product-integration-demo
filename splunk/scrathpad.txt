@@ -1,3 +1,0 @@
-  dogstatsd_addr                 = "{{env "attr.unique.platform.aws.public-ipv4"}}:8125"
-
-curl -k https://54.234.235.178:8443/en-US/account/login?return_to=%2Fen-US%2F
