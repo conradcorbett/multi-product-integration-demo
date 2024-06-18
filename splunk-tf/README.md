@@ -21,7 +21,7 @@ In Splunk UI: Settings > Indexes > vault-audit should not have events until the 
 I had originally built this demo to include Vault metrics with Telegraf, however Consul service mesh does not support UDP so I had to remove that portion from the demo.
 
 ## Create some Vault users
-
+```shell
 vault auth enable userpass
 for i in {1..10}
   do
@@ -34,10 +34,13 @@ for i in {1..10}
     vault login -method=userpass username=learner$i password=vtl-password >> step4.log 2>&1
     vault secrets list >> step4.log 2>&1
 done
+```
 
 ## Run a splunk query
+```shell
 index="vault-audit"  sourcetype="hashicorp_vault_audit_log" auth.accessor=* auth.entity_id=* response.mount_point="auth/userpass/"
 | eval month = strftime(_time, "%B %Y")
 | stats dc(auth.entity_id) as entity_count , first(_time) as last_event,last(_time) as first_event by sourcetype
 | eval StartTime=strftime(first_event, "%Y-%m-%dT%H:%M:%S")
 | eval EndTime=strftime(last_event, "%Y-%m-%dT%H:%M:%S")
+```
