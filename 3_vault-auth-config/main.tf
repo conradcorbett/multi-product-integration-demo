@@ -111,7 +111,7 @@ resource "vault_jwt_auth_backend_role" "splunk_tf_role" {
   user_claim      = "terraform_full_workspace"
   role_type       = "jwt"
   token_ttl       = 300
-  token_policies  = [vault_policy.admin.name]
+  token_policies  = [vault_policy.splunk_tf.name]
 
   bound_claims = {
     "sub" = join(":", [
