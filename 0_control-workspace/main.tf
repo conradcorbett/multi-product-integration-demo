@@ -128,6 +128,7 @@ resource "tfe_workspace" "workload" {
 }
 
 resource "tfe_workspace" "splunk-tf" {
+  depends_on = [tfe_workspace.vault_auth_config]
   name          = "9_splunk-tf"
   organization  = var.tfc_organization
   project_id    = var.tfc_project_id
