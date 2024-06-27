@@ -166,17 +166,17 @@ resource "tfe_variable" "tfc_vault_run_role" {
   variable_set_id = tfe_variable_set.project_vault_auth.id
 }
 
-data "tfe_workspace" "splunktf" {
-  name         = "9_splunk-tf"
-  organization = "${var.tfc_organization}"
-}
-
-resource "tfe_variable" "tfc_vault_run_role_ws9" {
-  key          = "TFC_VAULT_RUN_ROLE"
-  value        = vault_jwt_auth_backend_role.splunk_tf_role.role_name
-  category     = "env"
-  workspace_id = data.tfe_workspace.splunktf.id
-}
+#data "tfe_workspace" "splunktf" {
+#  name         = "9_splunk-tf"
+#  organization = "${var.tfc_organization}"
+#}
+#
+#resource "tfe_variable" "tfc_vault_run_role_ws9" {
+#  key          = "TFC_VAULT_RUN_ROLE"
+#  value        = vault_jwt_auth_backend_role.splunk_tf_role.role_name
+#  category     = "env"
+#  workspace_id = data.tfe_workspace.splunktf.id
+#}
 
 resource "tfe_variable" "tfc_vault_auth_path" {
   key          = "TFC_VAULT_AUTH_PATH"
